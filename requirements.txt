@@ -1,2 +1,5 @@
-motor
-pydantic
+# Core
+pydantic==1.8.2
+
+# Implementation - Mongo
+motor==2.5.1
