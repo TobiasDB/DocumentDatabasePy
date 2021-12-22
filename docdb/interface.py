@@ -2,9 +2,9 @@
 from pydantic import validate_arguments
 from typing import List
 
-import implementations
+from docdb.implementations import mongo
 
-IMPLEMENTATION = implementations.mongo
+IMPLEMENTATION = mongo
 
 class Client:
     lazyload = False
@@ -20,7 +20,7 @@ class Client:
     def _client(self):
         """ Lazy Connection """
         if self.__lazy_client is None:
-            self.__lazy_client = IMPLEMENTATION.get_client(self.__conn_str)
+            self.__lazy_client = IMPLEMENTATION.get_client(self._conn_str)
         return self.__lazy_client
 
     async def ping(self):

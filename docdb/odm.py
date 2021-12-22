@@ -1,8 +1,9 @@
 from pydantic import BaseModel, Field
 from pydantic.main import ModelMetaclass
 from typing import List, Union, Optional, ClassVar
-from interface import DB
-from errors import ODMHasNoDatabase, ODMNotLinkedToDatabase, ODMAlreadyLinkedToDatabase, ODMNotFoundInDatabase
+
+from docdb.interface import DB
+from docdb.errors import ODMHasNoDatabase, ODMNotLinkedToDatabase, ODMAlreadyLinkedToDatabase, ODMNotFoundInDatabase
 
 
 
