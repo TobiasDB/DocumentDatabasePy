@@ -13,7 +13,7 @@ def get_long_description():
 
 # TODO: Setup Pypi repository
 setup(
-    name="doc-db-lib",
+    name="docdb",
     description="Async Document Database Interface With ODM",
     long_description=get_long_description(),
     long_description_content_type="text/markdown",
@@ -33,7 +33,7 @@ setup(
         "test": ["tox==3.24.4"]
     },
     tests_require=[
-        "doc-db-lib[test]"
+        "docdb[test]"
     ],
     python_requires=">=3.8",
 )
