@@ -21,14 +21,14 @@ def get_database(client, db_name):
     # Create a cursor
     return client[db_name].with_options(codec_options)
 
-def _parse_filter(self, _filter):
+def _parse_filter(_filter):
     _filter = _filter or {}
     if (_id := _filter.get('_id')) is not None:
 
         _filter['_id'] = ObjectId(_id)
     return _filter
 
-def _parse_dict(self, _dict):
+def _parse_dict(_dict):
     _dict = _dict or {}
     if '_id' in _dict.keys():
         _dict['_id'] = None
@@ -97,13 +97,13 @@ async def update(db, collection, ids, document):
 async def delete_one(db, collection, id):
     _filter = _parse_filter({'_id': id})
     result = await db[collection].delete_one(_filter)
-    if result.matched_count:
+    if result.deleted_count:
         return True
     return False
 
 async def delete(db, collection, ids):
     _filter = _parse_filter({'_id': {'$in': ids}})
     result = await db[collection].delete_many(_filter)
-    if result.matched_count:
+    if result.deleted_count:
         return True
     return False
