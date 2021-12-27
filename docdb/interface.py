@@ -1,10 +1,10 @@
-
 from pydantic import validate_arguments
-from typing import List
+from typing import List, Optional
 
 from docdb.implementations import mongo
 
 IMPLEMENTATION = mongo
+
 
 class Client:
     lazyload = False
@@ -18,20 +18,21 @@ class Client:
 
     @property
     def _client(self):
-        """ Lazy Connection """
+        """Lazy Connection"""
         if self.__lazy_client is None:
             self.__lazy_client = IMPLEMENTATION.get_client(self._conn_str)
         return self.__lazy_client
 
     async def ping(self):
-        """ Ping the database to test connectivity """
+        """Ping the database to test connectivity"""
         return IMPLEMENTATION.ping(self._client)
 
 
 class DB(Client):
     lazyload = False
+
     @validate_arguments
-    def __init__(self, conn_str: str, db_name) -> None:
+    def __init__(self, conn_str: str, db_name: str) -> None:
         super().__init__(conn_str)
         self._db_name = db_name
 
@@ -41,7 +42,7 @@ class DB(Client):
 
     @property
     def _db(self):
-        """ Lazy Cursor """
+        """Lazy Cursor"""
         if self.__lazy_db is None:
             self.__lazy_db = IMPLEMENTATION.get_database(self._client, self._db_name)
         return self.__lazy_db
@@ -51,7 +52,7 @@ class DB(Client):
         return await IMPLEMENTATION.get_one(self._db, collection, id)
 
     @validate_arguments
-    async def get(self, collection: str, ids: List[str]) -> List[dict]:
+    async def get(self, collection: str, ids: Optional[List[str]]) -> List[dict]:
         return await IMPLEMENTATION.get(self._db, collection, ids)
 
     @validate_arguments
@@ -76,7 +77,4 @@ class DB(Client):
 
     @validate_arguments
     async def delete(self, collection: str, ids: List[str]) -> bool:
-        return await IMPLEMENTATION.delete_one(self._db, collection, ids)
-
-
-
+        return await IMPLEMENTATION.delete(self._db, collection, ids)
